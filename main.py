@@ -5,6 +5,8 @@ import pickle
 from plyer import notification
 import os
 from time import sleep
+from playsound import playsound
+
 
 MAILSCOPES = ["https://mail.google.com/"]
 
@@ -49,58 +51,51 @@ def get_email(service):
         .execute()
     )
     messages = results.get("messages", [])
-    # print(len(messages))
+
     message_pairs = []
     if not messages:
         pass
-        # print("You have no new messages")
     else:
 
-        for i in range(0, len(messages)):
+        for index in range(0, len(messages)):
             msg = (
                 service.users()
                 .messages()
-                .get(userId="me", id=messages[i]["id"])
+                .get(userId="me", id=messages[index]["id"])
                 .execute()
             )
             headers = msg["payload"]["headers"]
             subject = [i["value"] for i in headers if i["name"] == "Subject"][0]
-            # print(subject)
 
             sender = [i["value"] for i in headers if i["name"] == "From"][0]
-            # print(sender)
+
             message_pairs.append({"sender": sender, "subject": subject})
-            # print("\n")
 
     return message_pairs
 
 
 gservice = authenticate_google()
-print("Done")
+
 pairs_before = []
+
+print("Waiting for an unread email...")
 while True:
     pairs = get_email(gservice)
 
     # Set method cannot be used as dictionaries cannot be within sets. (So slow list comparison method used)
     diff = [item for item in pairs if item not in pairs_before]
     if diff:
-        print(diff)
 
         for email in diff:
             sender = email["sender"]
             subject = email["subject"]
             print("Sender: " + sender + " Subject: " + subject)
 
-            # send notification
-            # python -m pip install plyer
-
             notification.notify(
                 title="Message from " + sender, message=subject, app_icon=None
             )
-            # Show notification whenever needed
-            # One-time initialization
-            # toaster = ToastNotifier()
-            # toaster.show_toast(sender, subject, threaded=True,icon_path=None)  # 3 seconds
+
+            playsound("alarm.mp3")
 
     pairs_before = pairs
 
