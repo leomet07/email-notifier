@@ -1,3 +1,4 @@
+from logging import error
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
@@ -91,9 +92,12 @@ while True:
             subject = email["subject"]
             print("Sender: " + sender + " Subject: " + subject)
 
-            notification.notify(
-                title="Message from " + sender, message=subject, app_icon=None
-            )
+            try:
+                notification.notify(
+                    title="Message from " + sender, message=subject, app_icon=None
+                )
+            except error as e:
+                print(e)
 
             playsound("alarm.mp3")
 
