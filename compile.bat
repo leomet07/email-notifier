@@ -1,10 +1,11 @@
 @echo off
 
+FOR /F "tokens=*" %%g IN ('cd') do (SET cwd=%%g)
+
 call conda activate tensorflow1
 
-call pyinstaller --nowindowed -F --onefile  --hidden-import plyer.platforms.win.notification main.py
+call pyinstaller --nowindowed --icon="%cwd%\logo.ico" -F --onefile  --hidden-import plyer.platforms.win.notification main.py
 
-FOR /F "tokens=*" %%g IN ('cd') do (SET cwd=%%g)
 
 set "dist=dist"
 set "filepath=main.exe"
