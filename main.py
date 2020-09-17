@@ -80,7 +80,10 @@ gservice = authenticate_google()
 pairs_before = []
 
 print("Waiting for an unread email...")
+
+
 while True:
+    unread = False
     pairs = get_email(gservice)
 
     # Set method cannot be used as dictionaries cannot be within sets. (So slow list comparison method used)
@@ -88,8 +91,11 @@ while True:
     if diff:
 
         for email in diff:
+            unread = True
+
             sender = email["sender"]
             subject = email["subject"]
+
             print("Sender: " + sender + " Subject: " + subject)
 
             try:
@@ -97,9 +103,11 @@ while True:
                     title="Message from " + sender, message=subject, app_icon=None
                 )
             except error as e:
-                print(e)
+                # print(e)
+                pass
 
-            playsound("alarm.mp3")
+    if unread:
+        playsound("alarm.mp3")
 
     pairs_before = pairs
 
