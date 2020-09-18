@@ -100,7 +100,7 @@ while True:
 
             try:
                 notification.notify(
-                    title="Message from " + sender, message=subject, app_icon=None
+                    title="Message from " + sender, message="New Email", app_icon=None
                 )
             except error as e:
                 # print(e)
