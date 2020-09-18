@@ -96,11 +96,11 @@ while True:
             sender = email["sender"]
             subject = email["subject"]
 
-            print("Sender: " + sender + " Subject: " + subject)
+            print("Sender: " + sender[0:63] + " Subject: " + subject)
 
             try:
                 notification.notify(
-                    title="Message from " + sender, message="New Email", app_icon=None
+                    title=sender[0:63], message="New Email", app_icon=None
                 )
             except error as e:
                 # print(e)

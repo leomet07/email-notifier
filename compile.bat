@@ -18,5 +18,5 @@ move /Y "%newpath%" "%cwd%"
 
 rmdir /S /Q "%cwd%\dist\"
 rmdir /S /Q "%cwd%\build\"
-DEL /S /Q "%cwd%\main.spec"
+DEL /S /Q "%cwd%*.spec"
 DEL /S /Q "%cwd%\*.log"
